@@ -1,6 +1,8 @@
 package org.example.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -11,12 +13,16 @@ public class Produto implements Serializable {
     @Column(name = "PRO_ID")
     private Long proId;
 
-    @Column(name = "PRO_NOME")
+    @NotBlank(message = "Nome do produto é Obrigatório")
+    @Size(max = 100, message = "Nome do produto não deve conter mais de 100 caracteres")
+    @Column(name = "PRO_NOME", nullable = false, length = 100)
     private String proNome;
 
+    @NotBlank(message = "O produto deve conter preço de custo")
     @Column(name = "PRO_PRECO_CUSTO", precision = 10, scale = 2)
     private Double proPrecoCusto;
 
+    @NotBlank(message = "O produto deve conter preço de venda")
     @Column(name = "PRO_PRECO_VENDA", precision = 10, scale = 2)
     private Double proPrecoVenda;
 

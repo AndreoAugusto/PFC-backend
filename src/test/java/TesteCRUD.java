@@ -1,0 +1,27 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
+public class TesteCRUD {
+
+    WebDriver driver = new ChromeDriver();
+
+    driver.get("http://localhost:4200");
+
+    driver.getTitle();
+
+    driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1500));
+
+    WebElement textBox = driver.findElement(By.name("my-text"));
+    WebElement submitButton = driver.findElement(By.cssSelector("button"));
+
+    textBox.sendKeys("Selenium");
+    submitButton.click();
+
+    WebElement message = driver.findElement(By.id("message"));
+    message.getText();
+
+    driver.quit();
+}

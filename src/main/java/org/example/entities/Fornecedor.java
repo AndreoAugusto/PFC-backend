@@ -1,6 +1,11 @@
 package org.example.entities;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +18,32 @@ public class Fornecedor implements Serializable {
     @Column(name = "FOR_ID")
     private Long forId;
 
-    @Column(name = "FOR_NOME_FANTASIA")
+    @OneToMany(mappedBy = "endFornecedor", cascade = CascadeType.ALL)
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conFornecedor", cascade = CascadeType.ALL)
+    private List<Contato> contatos = new ArrayList<>();
+
+
+    @NotBlank(message = "Nome fantasia é obrigatório")
+    @Size(max = 100, message = "Nome não deve conter mais de 100 caracteres")
+    @Column(name = "FOR_NOME_FANTASIA", nullable = false, length = 100)
     private String forNomeFantasia;
 
-    @Column(name = "FOR_CNPJ", unique = true, length = 14)
+    @NotBlank(message = "CNPJ é Obrigatório")
+    @CNPJ(message = "CPNJ é Obrigatório")
+    @Column(name = "FOR_CNPJ", nullable = false, unique = true, length = 18)
     private String forCnpj;
 
-    @Column(name = "FOR_RAZAO_SOCIAL")
+    @NotBlank(message = "Razão Social é obrigatório")
+    @Size(max = 100, message = "Razão Social não deve conter mais de 100 caracteres")
+    @Column(name = "FOR_RAZAO_SOCIAL", nullable = false, length = 100)
     private String forRazaoSocial;
 
     public Fornecedor() {
     }
 
-    public Fornecedor(Long forId, String forNome, String forNomeFantasia, String forCnpj, String forRazaoSocial) {
+    public Fornecedor(Long forId, String forNomeFantasia, String forCnpj, String forRazaoSocial) {
         this.forId = forId;
         this.forNomeFantasia = forNomeFantasia;
         this.forCnpj = forCnpj;
@@ -38,6 +56,22 @@ public class Fornecedor implements Serializable {
 
     public void setForId(Long forId) {
         this.forId = forId;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public List<Contato> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
     }
 
     public String getForNomeFantasia() {
@@ -63,5 +97,4 @@ public class Fornecedor implements Serializable {
     public void setForRazaoSocial(String forRazaoSocial) {
         this.forRazaoSocial = forRazaoSocial;
     }
-
 }

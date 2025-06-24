@@ -1,7 +1,14 @@
 package org.example.entities;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Cliente implements Serializable {
@@ -11,27 +18,40 @@ public class Cliente implements Serializable {
     @Column(name = "CLI_ID")
     private Long cliId;
 
-    @Column(name = "CLI_NOME")
+    @OneToMany(mappedBy = "endCliente", cascade = CascadeType.ALL)
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conCliente", cascade = CascadeType.ALL)
+    private List<Contato> contatos = new ArrayList<>();
+
+    @NotBlank(message = "Nome é Obrigatório")
+    @Size(max = 100, message = "Nome não pode conter mais de 100 caracteres")
+    @Column(name = "CLI_NOME", nullable = false, length = 100)
     private String cliNome;
 
-    @Column(name = "CLI_CPF", length = 11)
+    @NotBlank(message = "CPF é Obrigatório")
+    @CPF(message = "CPF inválido")
+    @Column(name = "CLI_CPF", nullable = false, unique = true, length = 11)
     private String cliCpf;
 
-    @Column(name = "CLI_EMAIL")
+    /*@NotBlank(message = "Email é Obrigatório")
+    @Email(message = "Email inválido")
+    @Size(max = 100, message = "Email não pode conter mais de 100 caracteres")
+    @Column(name = "CLI_EMAIL", nullable = false, length = 100)
     private String cliEmail;
 
-    @Column(name = "CLI_TELEFONE", length = 14)
-    private String cliTelefone;
+    @NotBlank(message = "Obrigatório preencher telefone")
+    @Size(max = 14, message = "telefone não pode conter mais de 14 caracteres")
+    @Column(name = "CLI_TELEFONE", nullable = false, length = 14)
+    private String cliTelefone;*/
 
     public Cliente() {
     }
 
-    public Cliente(Long cliId, String cliNome, String cliCpf, String cliEmail, String cliTelefone) {
+    public Cliente(Long cliId, String cliNome, String cliCpf) {
         this.cliId = cliId;
         this.cliNome = cliNome;
         this.cliCpf = cliCpf;
-        this.cliEmail = cliEmail;
-        this.cliTelefone = cliTelefone;
     }
 
     public Long getCliId() {
@@ -58,7 +78,23 @@ public class Cliente implements Serializable {
         this.cliCpf = cliCpf;
     }
 
-    public String getCliEmail() {
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public List<Contato> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
+    }
+
+    /*public String getCliEmail() {
         return cliEmail;
     }
 
@@ -72,5 +108,5 @@ public class Cliente implements Serializable {
 
     public void setCliTelefone(String cliTelefone) {
         this.cliTelefone = cliTelefone;
-    }
+    }*/
 }

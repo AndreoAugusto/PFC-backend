@@ -24,6 +24,9 @@ public class Fornecedor implements Serializable {
     @OneToMany(mappedBy = "conFornecedor", cascade = CascadeType.ALL)
     private List<Contato> contatos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "fornecedor")
+    private List<Produto> produtos;
+
 
     @NotBlank(message = "Nome fantasia é obrigatório")
     @Size(max = 100, message = "Nome não deve conter mais de 100 caracteres")
@@ -72,6 +75,14 @@ public class Fornecedor implements Serializable {
 
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 
     public String getForNomeFantasia() {

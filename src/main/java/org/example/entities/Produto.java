@@ -13,6 +13,7 @@ public class Produto implements Serializable {
     @Column(name = "PRO_ID")
     private Long proId;
 
+
     @NotBlank(message = "Nome do produto é Obrigatório")
     @Size(max = 100, message = "Nome do produto não deve conter mais de 100 caracteres")
     @Column(name = "PRO_NOME", nullable = false, length = 100)
@@ -25,6 +26,10 @@ public class Produto implements Serializable {
     @NotBlank(message = "O produto deve conter preço de venda")
     @Column(name = "PRO_PRECO_VENDA", precision = 10, scale = 2)
     private Double proPrecoVenda;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
 
     public Produto() {
     }
